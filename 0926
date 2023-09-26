@@ -1,0 +1,24 @@
+早上：
+(1)https://leetcode.cn/problems/pass-the-pillow/description/?envType=daily-question&envId=2023-09-26 力扣每日一题它的时间复杂度可以从O(n)降到O(1),通过数学归纳,2*(n-1)。
+笨的方法就是说模拟。
+(2)然后蓝桥杯的https://www.lanqiao.cn/problems/1443/learning/?problem_list_id=2&page=1&sort=students_count 也是用到一个  String[] strArr = iStr.split("");
+将字符串通过空字符转成字符串数组了,它这里没转成字符数组是因为后面需要将这个字符串转成int好处让每个对应的0-9减少。
+早上：
+(1)JUC了解了如果我在多线程且要结果且要异步的情况下为什么使用FutureTask。因为FutureTask继承了Runnable（满足多线程）且继承了Future（满足异步），且FutureTask有个构造函数就是传
+Callable参数（返回结果）。所以说FutureTask完美符合，这才是为什么它作为这个条件的最佳人员，而不是胡乱学别人。
+(2)要明白为什么用线程池，你每次去new的话是不是很浪费堆空间而且最后还要GC。然后自己要再去看看构建线程池的那些参数。
+下午：
+(1)如果说总的架构的话是五层：首先是Connectors(连接器)就是说不同语言与SQL的交互，比如Java的JDBC，然后就是连接层，服务层，引擎层，存储层。MySQL服务器的话总共有三层：连接层、服务层、引擎层。
+脑子里要有逻辑架构：。连接之前先做一个TCP连接，连接负责认证账号密码是否
+正确，获取权限。然后服务层的话有接收用户的SQL命令，解析器解析，优化器优化，如果是8.0以下还有查询缓存。引擎层的话就是真正负责数据的存储和提取，当然MySQL有很多存储引擎默认是InnoDB。
+(2)SQL的执行流程以5.0为例：先建立TCP连接，然后查询缓存看缓存是否存在，如果不存在则分析SQL的语句语法是否正确，然后进行优化器的优化，执行引擎的执行，将其放入缓存，返回结果。
+(3)查询缓存在8.0取消就是因为它的缓存命中率极低，因为SQL语句有优化器啥的而且比如now()时间就不同很难缓存命中。缓存更适用于静态表，也就是不怎么更新的表。
+(4)profile可以查看底层的执行流程,具体的操作看文档。对于查询缓存的命令也可以看文档。
+(5)left join 左边全部和右边满足条件的，右边没有满足条件的则为NULL、inner join 交集 注意它们后面都跟一个ON 就是相当于WHERE。Full OUTER JOIN并集，彼此没有对应的值则为NULL
+晚上：
+(1)Bean、Component、Controller、Service、Repostory。Component包含了（Controller、Service、Repostory）,Component通过反射调用构造方法创建Bean的，@Bean一般和@Configure配合，Configure
+是修饰类的，@Bean是修饰方法的，就是方法的返回对象就是一个Bean。然后自己想想Bean的5个作用域（Web3个，单例1个，每个对象1个）。
+(2)鱼皮项目的对于公共返回值（错误码，泛型的Data，消息，描述），本来是将这个作为统一的返回的对象好看一点。但是你每次返回都要new 比如return new JsonResult<Void>(OK) 不对味，
+而且你每次这样还要传比如404这种，不美观，咱们直接定义一个枚举类来列举这些情况，注意变量要用常量。因为枚举类通常不需要被继承或扩展，所以枚举类的变量经常会使用final修饰。设置相应
+的构造函数。然后第二次就是说我写一个工具类，这个工具类帮我创建公共返回值对象。注意用静态方法。给它搞相应的构造方法依据你的逻辑去弄。但是你每次都要return ResultUtils.error(ErrorCode.PARAMS_ERROR)
+这样在不符合条件的适合不太对味。我们说第三次就是通过异常类来表示，异常类表示的话可以支持更多的信息传递这种，让前端得到更详细的信息。同理你设置相应的构造方法。
